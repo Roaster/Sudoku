@@ -6,7 +6,7 @@ class SudokuPuzzle:
         for row in range(1,9): 
             startingPuzzle[row] = list(startingPuzzle[row - 1])
             startingPuzzle[row].append(startingPuzzle[row].pop(0))
-
+        #easy puzzle
         startingPuzzle = [[0,1,0,8,0,0,4,7,0],
                             [4,7,0,0,3,5,0,2,0],
                             [0,0,2,0,0,0,0,0,0],
@@ -16,6 +16,17 @@ class SudokuPuzzle:
                             [0,6,0,0,0,0,7,0,0],
                             [1,0,0,6,5,0,9,0,0],
                             [0,3,9,7,2,0,0,0,0]]
+
+        #hard puzzle
+        startingPuzzle = [[0,0,0,0,0,0,0,0,0],
+                            [5,4,8,0,1,0,0,0,0],
+                            [0,0,0,2,0,4,0,0,0],
+                            [0,0,0,0,0,0,9,0,0],
+                            [0,5,0,7,3,0,6,0,4],
+                            [1,7,0,0,0,0,0,0,3],
+                            [0,0,9,0,4,0,0,0,0],
+                            [3,0,0,0,2,8,1,0,0],
+                            [0,0,0,0,0,0,7,0,9]]
 
         self.puzzle = startingPuzzle
 
@@ -72,30 +83,19 @@ class SudokuPuzzle:
         box7 = [row[6:9] for row in puzzle[0:3]]
         box8 = [row[6:9] for row in puzzle[3:6]]
         box9 = [row[6:9] for row in puzzle[6:9]]
-        #print("box1", box1)
-        # box2 = puzzle[0:3][3:6]
-        # box3 = puzzle[0:3][6:9]
-        # box4 = puzzle[3:6][0:3]
-        # box5 = puzzle[3:6][3:6]
-        # box6 = puzzle[3:6][6:9]
-        # box7 = puzzle[6:9][0:3]
-        # box8 = puzzle[6:9][3:6]
-        # box9 = puzzle[6:9][6:9]
-        # print(box1)
+        
         boxes = [box1, box2, box3, box4, box5, box6, box7, box8, box9]
+
         for box in boxes:
             foundNums = set()
-    
             for row in range(3):
                 for column in range(3):
                     #print(box[row][column])
                     if box[row][column] not in foundNums and box[row][column] != 0:
                         #print(box[row][column])
                         foundNums.add(box[row][column])
-                        
                     elif box[row][column] == 0:
                         continue
-        
                     else: 
                         #print("returning false", row)
                         return False
