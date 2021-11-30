@@ -63,7 +63,16 @@ class SudokuPuzzle:
                     return False
         
         #check boxes
-        # box1 = puzzle[0:3][0:3]
+        box1 = [row[0:3] for row in puzzle[0:3]]
+        box2 = [row[0:3] for row in puzzle[3:6]]
+        box3 = [row[0:3] for row in puzzle[6:9]]
+        box4 = [row[3:6] for row in puzzle[0:3]]
+        box5 = [row[3:6] for row in puzzle[3:6]]
+        box6 = [row[3:6] for row in puzzle[6:9]]
+        box7 = [row[6:9] for row in puzzle[0:3]]
+        box8 = [row[6:9] for row in puzzle[3:6]]
+        box9 = [row[6:9] for row in puzzle[6:9]]
+        #print("box1", box1)
         # box2 = puzzle[0:3][3:6]
         # box3 = puzzle[0:3][6:9]
         # box4 = puzzle[3:6][0:3]
@@ -73,23 +82,23 @@ class SudokuPuzzle:
         # box8 = puzzle[6:9][3:6]
         # box9 = puzzle[6:9][6:9]
         # print(box1)
-        # boxes = [box1, box2, box3, box4, box5, box6, box7, box8, box9]
-        # for box in boxes:
-        #     foundNums = set()
+        boxes = [box1, box2, box3, box4, box5, box6, box7, box8, box9]
+        for box in boxes:
+            foundNums = set()
     
-        #     for row in range(3):
-        #         for column in range(3):
-        #             print(box[row][column])
-        #             if box[row][column] not in foundNums and box[row][column] != 0:
-        #                 print(box[row][column])
-        #                 foundNums.add(box[row][column])
+            for row in range(3):
+                for column in range(3):
+                    #print(box[row][column])
+                    if box[row][column] not in foundNums and box[row][column] != 0:
+                        #print(box[row][column])
+                        foundNums.add(box[row][column])
                         
-        #             elif box[row][column] == 0:
-        #                 continue
+                    elif box[row][column] == 0:
+                        continue
         
-        #             else: 
-        #                 print("returning false", row)
-        #                 return False
+                    else: 
+                        #print("returning false", row)
+                        return False
             
         return True
 
