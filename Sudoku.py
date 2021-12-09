@@ -6,7 +6,7 @@ import time
 class SudokuPuzzle:
     def __init__(self, puzzle):
         
-        if puzzle == "":
+        if puzzle != "":
             startingPuzzle = convertToSudokuFormat(puzzle)
         else:
             #Randomized simple puzzle
@@ -73,16 +73,19 @@ class SudokuPuzzle:
             for index in randomIndices:
                 self.puzzle[row][index] = 0
             
-    def printPuzzle(self):
+    def printPuzzle(self, puzzle):
         for row in range(9):
             for column in range(9):
                 if column % 3 == 0 and column != 0:
                     print("| ", end='')
-                print(self.puzzle[row][column], end=' ')
+                print(puzzle[row][column], end=' ')
             if row ==2 or row == 5:
                 print("\n", "-"*20)
             else:
                 print()
+
+    
+
 
 
     def checkSquare(self, puzzle, row, column, number):
@@ -182,6 +185,39 @@ def convertToSudokuFormat(puzzle):
     
     return convertedPuzzle
 
+def loadPuzzles(fileName):
+    with open(fileName) as f:
+        lines = f.readlines()
+    puzzles = []
+    for line in lines:
+        puzzles.append(line)
+    
+    return puzzles
+
+def testProblems(fileName):
+    import time
+    print("Starting Testing...")
+    puzzles = loadPuzzles(fileName)
+    times = []
+    for puzzle in puzzles:
+        
+        newSudokuPuzzle = SudokuPuzzle(puzzle)
+        start = time.time()
+        print("Unsolved Puzzle: ")
+        newSudokuPuzzle.printPuzzle(newSudokuPuzzle.puzzle)
+        newSudokuPuzzle.solve(False)
+        print()
+        print("Solved Puzzle: ")
+        newSudokuPuzzle.printPuzzle(newSudokuPuzzle.puzzle)
+        end = time.time()
+        times.append(end-start)
+        print("Solved in " + str(end-start) + " seconds\n")
+
+    sum = 0
+    for time in times:
+        sum += int(time)
+    print("Average solve time of " + str(sum/len(times)) + " seconds")
+
 
 def drawBoard(puzzle):
     w = 70
@@ -207,15 +243,14 @@ def drawBoard(puzzle):
 
 puzzleString = "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
 #Testing
-myPuzzle = SudokuPuzzle(puzzleString)
-myPuzzle.printPuzzle()
-print(myPuzzle.checkValidMove(0,5,2))
+myPuzzle = SudokuPuzzle("")
 #Testing
-
+#testProblems("easy.txt")
 
 pygame.init()
 size = 630,630
 screen = pygame.display.set_mode(size)
+pygame.display.set_caption("Sudoku for Dummies")
 number_font = pygame.font.SysFont( None, 90 )
 BLACK = (0,0,0)
 WHITE = (255, 255, 255)
@@ -231,42 +266,53 @@ def start():
                 print("Ending")
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
+                    start = time.time()
                     myPuzzle.solve(True)
+                    end = time.time()
+                    print("Solved in " + str(end-start) + " seconds")
+
                 if event.key == pygame.K_r:
                     myPuzzle.reset()
+
                 if event.key == pygame.K_i:
                     print("Enter next move")
                     move = input()
                     row = int(move[0])
                     column = int(move[1])
                     inputNum = int(move[2])
-                    if myPuzzle.puzzleBackup[row][column] == 0:
-                        myPuzzle.updatePosition(row, column, inputNum)
+                    
+                    myPuzzle.updatePosition(row, column, inputNum)
+                        
+                if event.key == pygame.K_t:
+                    testProblems("easy.txt")
+
+                if event.key == pygame.K_q:
+                    start = time.time()
+                    myPuzzle.solve(False)
+                    end = time.time()
+                    print("Solved in " + str(end-start) + " seconds")
+                    myPuzzle.reset()
                 
                     
                 if event.key == pygame.K_h:
                     myPuzzle.hint()
-        
+        pygame.display.flip()
     pygame.quit()
+
 
 start()
 #Testing...
 
 # myPuzzle = SudokuPuzzle()
-# myPuzzle.printPuzzle()
+
 #startGame()
 #print(myPuzzle.check(myPuzzle.puzzle))
 #myPuzzle.randomize()
 #print(myPuzzle.checkValidMove(0,0,1))
 #print("Random Puzzle: ")
-##myPuzzle.printPuzzle()
+
 #print(myPuzzle.checkValidMove(0,0,1))
-start = time.time()
-print(myPuzzle.solve(False)) # yPuzzle.puzzle
-end = time.time()
-print(end-start)
-#print("\nSolved Puzzle: ") 
-myPuzzle.printPuzzle()
+
 #print(myPuzzle.check())
 
 #MIGHT NEED?
